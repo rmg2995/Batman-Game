@@ -12,7 +12,7 @@ class Batman {
         this.widthImage = 64
         this.heightImage = 67
         this.image = new Image()
-        this.image.src = "../Batman/batman-canvas.jpg"
+        this.image.src = "Batman/batman-canvas.jpg"
         // let image1 = new Image()
         // this.image.src = "../Batman/Batman canvas left to right.png"
         
@@ -72,7 +72,7 @@ canvas.height = game1.canvasHeight
 
 function drawMap(){
     this.image = new Image()
-    this.image.src = "../Batman/batman experiment.gif"
+    this.image.src = "/Batman/batman experiment.gif"
     cxt.drawImage(this.image, 0, 0, canvas.width, canvas.height )
     
 
