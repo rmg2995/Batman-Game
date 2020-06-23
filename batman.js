@@ -11,9 +11,18 @@ class Game {
     constructor(){
         this.image = new Image()
         this.image.src = "/Batman/batman experiment.gif"
-        this.batrangs = []
+        // this.batrangs = []
+        this.jokers = []
     }
-
+    addJoker = () => {
+        // const joker = new Joker("Joker","/Batman/Joker-01.png", 50 ,100)
+        // const joker2 = new Joker("Joker","/Batman/Joker-01.png", 350 ,100)
+        // this.jokers.push(joker, joker2)
+        setInterval(() => {
+            let joker = new Joker("Joker","/Batman/Joker-01.png", Math.random() * canvas.width , Math.random() * canvas.height)
+            this.jokers.push(joker)
+        }, 2000)
+    }
 
     drawMap = () => {
         ctx.drawImage(this.image, 0, 0, canvas.width, canvas.height )
@@ -43,16 +52,48 @@ class Character{
         this.direction = "Up"
     }
 
-    drawCharacter = () => {
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height, this.xCanvas, this.yCanvas, this.widthCanvas, this.heightCanvas) // (imageObj, imageX, imageY, imageWidth, imageHeight, xCanvas, yCanvas, widthCanvas, heightCanvas)
-        this.batrangs.forEach(rang => rang.drawThisBatrang() )
-    }
+    
 
     shootBatrang = () => {
         this.batrangs.push( 
             new Batrang(this.xCanvas, this.yCanvas, 50, 50, 'blue', this.direction, this.batrangs.length-1) 
         )
     }
+    detectCollision = (batrang) => {
+
+
+        game.jokers.forEach(joker => {
+            joker.moveJoker()
+            console.log(joker)
+            //this.batrangs.forEach(batrang => {
+                if (joker.xCanvas < batrang.x + batrang.width &&
+                    joker.xCanvas + joker.widthCanvas > batrang.x &&
+                    joker.yCanvas < batrang.y + batrang.height &&
+                    joker.yCanvas + joker.heightCanvas > batrang.y) {
+                    console.log('collision detected!')
+                 }
+
+
+            //})
+
+
+        })
+       
+            
+        } 
+        
+        drawCharacter = () => {
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height, this.xCanvas, this.yCanvas, this.widthCanvas, this.heightCanvas) // (imageObj, imageX, imageY, imageWidth, imageHeight, xCanvas, yCanvas, widthCanvas, heightCanvas)
+            this.batrangs.forEach(rang => {
+                rang.drawThisBatrang()
+                this.detectCollision(rang)
+            } )
+        }
+      
+    
+      
+      
+    
     
 }
 
@@ -78,17 +119,22 @@ class Joker extends Character{
     constructor(name, image, x, y, width, height, xCanvas, yCanvas, widthCanvas, heightCanvas){
         super(name, image, x, y, width, height, xCanvas, yCanvas, widthCanvas, heightCanvas) 
         this.name = name;
+    
     }
-
+    moveJoker= () => {
+        this.xCanvas++
+        this.yCanvas++
+        console.log(this)
+    }
 
 }
 
 
 //THis will probably end up going in an array 
 
-const joker = new Joker("Joker","/Batman/Joker-01.png", 50 ,100)
+//const joker = new Joker("Joker","/Batman/Joker-01.png", 50 ,100)
 
-const joker2 = new Joker("Joker","/Batman/Joker-01.png", 350 ,100)
+//const joker2 = new Joker("Joker","/Batman/Joker-01.png", 350 ,100)
 
 
 
@@ -125,7 +171,7 @@ class Batrang {
     }
 }
 
-
+game.addJoker()
 
 function animationLoop() {
     animationID = window.requestAnimationFrame(animationLoop)
@@ -133,8 +179,8 @@ function animationLoop() {
     // ctx.fillRect(0, 0, canvas.width, canvas.height)
     game.drawMap()
     batman.drawCharacter()
-    joker.drawCharacter()
-    joker2.drawCharacter()
+    game.jokers.forEach(joker => joker.drawCharacter())
+    
     // ctx.drawImage(batman.image, batman.xImage, batman.yImage, batman.widthImage,batman.heightImage, batman.xCanvas, batman.yCanvas, batman.widthCanvas, batman.heightCanvas) // (imageObj, imageX, imageY, imageWidth, imageHeight, xCanvas, yCanvas, widthCanvas, heightCanvas)
     // game.draw()
     // ctx.drawImage(joker.image, joker.xImage, joker.yImage, joker.widthImage,joker.heightImage, joker.xCanvas, joker.yCanvas, joker.widthCanvas, joker.heightCanvas)
