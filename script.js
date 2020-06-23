@@ -3,21 +3,23 @@
 //Game class
 class Game {
     // Game properties: canvasWidth, canvasHeight, BatmanObj, JokerObj, lives
-    constructor(width, height, batrangs, frames, score){
-        this.canvasWidth = width
-        this.canvasHeight = height
-        //  this.batman = new Batman()
-        // this.joker = new Joker()
+    constructor(){
+
+        this.canvasWidth = 700
+        this.canvasHeight = 500
         this.lives = 3
         this.animationID = 0
-        this.batrangs = batrangs
-        this.frames = frames
-        this.score = score
+        this.batrangs = []
+        this.frames = 1
+        this.score = 0
+        this.jokers = []
     }
+    drawJkrs = () => this.jokers.forEach(joker => joker.drawThisJkrs())
     drawBatrang = () => this.batrangs.forEach(batrang => batrang.drawThisBatrang())
   
     shootGun = () => { 
-    this.batrangs.push( new Batrang({x: Batman.xCanvas + Batman.widthCanvas / 2, y: Batman.yCanvas, color: 'black', width: 2, height: 10 }) )
+        console.log('batman.shootGun', this)
+        game.batrangs.push( new Batrang({x: batman.x, y: batman.y, direction: this.direction, color: 'black', width: 2, height: 10 }) )
   }
     gameOver(animationID) {
         if(this.lives <= 0){
@@ -26,9 +28,37 @@ class Game {
         }
     }
     draw = () => {
+        // console.log("draw")
         game.drawBatrang()
     }
+    detectCollision = () => {
+        this.jokers.forEach((jkrs,i) => { //Look at each obstacle to see if it hit the car?
+      
+          this.batrangs.forEach((batrangs,j) => {
+      
+            if (batrangs.xCanvas < jkrs.xCanvas + jkrs.widthCanvas &&
+              batrangs.xCanvas + batrangs.widthCanvas > jkrs.xCanvas &&
+              batrangs.yCanvas< jkrs.yCanvas+ jkrs.height &&
+              batrangs.yCanvas+ batrangs.height > jkrs.y) {
+                this.jkrs.splice(i,1)
+                this.batrangs.splice(j,1)
+            }
+            
+          })
+      
+          if (carObj.x < obs.x + obs.width &&
+            carObj.x + carObj.width > obs.x &&
+            carObj.y < obs.y + obs.height &&
+            carObj.y + carObj.height > obs.y) {
+             window.cancelAnimationFrame(id)
+            //  alert('game over')
+          }  
+      
+        })
+      
+      }
 }
+let game = new Game()
 // Batman properties: x, y, width, height, image, health
 // Batman methods: shoot, move, detectCollision
 
@@ -46,68 +76,39 @@ class Batman extends Game{
         this.heightImage = 50
         this.image = new Image()
         this.image.src = "/Batman/batman finally.jpg" 
+        this.direction = "Down"
     }
+
 
     
-    shootGun = () => {
-        Batman.batrangs.push( new Batrang({x: this.xCanvas + this.widthCanvas / 2,y: this.yCanvas,color: 'blue' , width: 2, height: 10 }))
-    }
+    
+
+    
 }
-this.batman = new Batman()
+const batman = new Batman()
 
 
 
 
 
-document.addEventListener('keydown', function(event){
-    switch(event.key) {
-        case 'ArrowUp':
-            batman.yImage =48* 3
-            batman.yCanvas -= 10
-            batman.xImage = (batman.xImage + 45) % 90
-            
-            break;
-        case 'ArrowDown':
-            batman.yImage =0
-            batman.yCanvas += 10
-            batman.xImage = (batman.xImage + 45) % 90
-            break;
-        case 'ArrowLeft':
-            
-            batman.yImage =48* 1
-            batman.xCanvas -= 10
-            batman.xImage = (batman.xImage + 45) % 90
-            break;
-        case 'ArrowRight':
-            batman.yImage = 48 * 2
-            batman.xCanvas += 10
-            batman.xImage = (batman.xImage + 45) % 90
-            break;
-        case " ":
-            console.log()
-            game.shootGun()
-    }
-})
+
 class Batrang extends Batman{
     constructor({xCanvas,yCanvas,widthCanvas,heightImage, color}){
       super({xCanvas,yCanvas,widthCanvas,heightImage, color})
       this.color = color 
     }
     drawThisBatrang = () => {
+        console.log(this.direction)
         ctx.fillStyle = "blue";
-        ctx.fillRect(this.xCanvas+ this.widthCanvas/2, this.yCanvas-=5, 2, 10)
+        ctx.fillRect(0, 0, 2, 10)
     }
-}class Obstacle extends Batman {
-    constructor({x, y, width, height, color, good, bullets}){
-      super({x, y, width, height, bullets})
-      this.color = color 
-      this.good = good
-    }
-}
 
+}
 class Joker {
     constructor(){
-        this.xCanvas = 0
+        this.moveX=5
+        this.moveY = 5
+        this.xCanvas = 300 
         this.yCanvas = 0
         this.widthCanvas = 64
         this.heightCanvas = 64
@@ -119,17 +120,8 @@ class Joker {
         this.image.src = "/Batman/Joker-01.png" 
     }
 }
+this.joker = new Joker()
 
-let game = new Game(
-    canvasWidth= '700' ,
-    canvasHeight= '500',
-    jokers= [],
-    batrangs= [],
-    frames= 1,
-    score= 0,
-    
-        
-)
 const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
 canvas.width = game.canvasWidth
@@ -151,6 +143,39 @@ function animationLoop() {
     drawMap()
     ctx.drawImage(batman.image, batman.xImage, batman.yImage, batman.widthImage,batman.heightImage, batman.xCanvas, batman.yCanvas, batman.widthCanvas, batman.heightCanvas) // (imageObj, imageX, imageY, imageWidth, imageHeight, xCanvas, yCanvas, widthCanvas, heightCanvas)
     game.draw()
+    ctx.drawImage(joker.image, joker.xImage, joker.yImage, joker.widthImage,joker.heightImage, joker.xCanvas, joker.yCanvas, joker.widthCanvas, joker.heightCanvas)
 }
 
 animationLoop()
+document.addEventListener('keydown', function(event){
+    switch(event.key) {
+        case 'ArrowUp':
+            batman.yImage =48* 3
+            batman.yCanvas -= 10
+            batman.xImage = (batman.xImage + 45) % 90
+            batman.direction= "Up"
+            break;
+        case 'ArrowDown':
+            batman.yImage =0
+            batman.yCanvas += 10
+            batman.xImage = (batman.xImage + 45) % 90
+            batman.direction = "Down"
+            break;
+        case 'ArrowLeft':
+            
+            batman.yImage =48* 1
+            batman.xCanvas -= 10
+            batman.xImage = (batman.xImage + 45) % 90
+            batman.direction= "Left"
+            break;
+        case 'ArrowRight':
+            batman.yImage = 48 * 2
+            batman.xCanvas += 10
+            batman.xImage = (batman.xImage + 45) % 90
+            batman.direction = "Right"
+            break;
+        case " ":
+            console.log()
+            game.shootGun()
+    }
+})
