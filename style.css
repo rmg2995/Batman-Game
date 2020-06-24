@@ -1,3 +1,67 @@
-body{
-    overflow:hidden;
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed:700|Roboto:100,300,700");
+
+html{
+    font-family: roboto;
 }
+
+
+body{
+    background-image: url("Batman/gotham real.jpg");
+    background-size: cover;
+    height: 500px;
+    overflow: hidden;
+    position: relative;
+    background-color: black;
+    color: yellow;
+}
+
+h1{
+    color: yellow;
+    text-align: center;
+    text-transform: uppercase;
+}
+h3{
+    text-align: center;
+    padding-top: 75px
+}
+p{
+    color: yellow;
+    text-align: center;
+}
+
+#id{
+    display: flex;
+    justify-content: space-evenly;
+}
+#startbtn{
+    background-color:yellow;
+    width: 250px;
+    height: 50px;
+    font-size: 20px;
+    margin: 10px 700px 
+
+}
+.score{
+    font-size: 25px;
+    text-align: center;
+}
+.lives{
+    font-size: 25px;
+    text-align: center;
+}
+#canvas{
+    padding: 0 25% 0 0;
+    float: right;
+    width: 600px
+}
+.logo{
+    height: 150px;
+    
+    padding: 0 38%;
+ }
+ .arrows{
+     width: 150px;
+ }
+ .spacebar{
+     width: 250px;
+ }
