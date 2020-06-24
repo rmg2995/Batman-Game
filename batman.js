@@ -10,7 +10,7 @@ class Game {
 
     constructor(){
         this.image = new Image()
-        this.image.src = "/Batman/batman experiment.gif"
+        this.image.src = "Batman/batman experiment.gif"
         // this.batrangs = []
         this.jokers = []
     }
@@ -19,7 +19,7 @@ class Game {
         // const joker2 = new Joker("Joker","/Batman/Joker-01.png", 350 ,100)
         // this.jokers.push(joker, joker2)
         setInterval(() => {
-            let joker = new Joker("Joker","/Batman/Joker-01.png", Math.random() * canvas.width , Math.random() * canvas.height)
+            let joker = new Joker("Joker","Batman/Joker-01.png", Math.random() * canvas.width , Math.random() * canvas.height)
             this.jokers.push(joker)
         }, 2000)
     }
@@ -49,45 +49,52 @@ class Character{
         this.heightCanvas = 64
         this.batrangs = []  //objects 
         this.bangGunBullets = [] //objects 
-        this.direction = "Up"
+        this.direction = "Down"
     }
 
     
 
     shootBatrang = () => {
         this.batrangs.push( 
-            new Batrang(this.xCanvas, this.yCanvas, 50, 50, 'blue', this.direction, this.batrangs.length-1) 
+            new Batrang(this.xCanvas+ 32, this.yCanvas + 38, 6, 6, this.color, this.direction, this.batrangs.length-1) 
         )
     }
     detectCollision = (batrang) => {
+ 
 
-
-        game.jokers.forEach(joker => {
-            joker.moveJoker()
-            console.log(joker)
+        game.jokers.forEach((joker, i) => {
+            
+            //joker.moveJoker()
+            //console. log(joker)
             //this.batrangs.forEach(batrang => {
-                if (joker.xCanvas < batrang.x + batrang.width &&
-                    joker.xCanvas + joker.widthCanvas > batrang.x &&
-                    joker.yCanvas < batrang.y + batrang.height &&
-                    joker.yCanvas + joker.heightCanvas > batrang.y) {
-                    console.log('collision detected!')
-                 }
+            if (joker.xCanvas < batrang.x + batrang.width &&
+                joker.xCanvas + joker.widthCanvas > batrang.x &&
+                joker.yCanvas < batrang.y + batrang.height &&
+                joker.yCanvas + joker.heightCanvas > batrang.y) {
+                     game.jokers.splice(i,1)
+                        
+
+                    //console.log('collision detected!')
+                }
 
 
-            //})
+            
 
 
         })
        
             
-        } 
+    } 
+
+
         
-        drawCharacter = () => {
-            ctx.drawImage(this.image, this.x, this.y, this.width, this.height, this.xCanvas, this.yCanvas, this.widthCanvas, this.heightCanvas) // (imageObj, imageX, imageY, imageWidth, imageHeight, xCanvas, yCanvas, widthCanvas, heightCanvas)
-            this.batrangs.forEach(rang => {
-                rang.drawThisBatrang()
-                this.detectCollision(rang)
-            } )
+    drawCharacter = () => {
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height, this.xCanvas, this.yCanvas, this.widthCanvas, this.heightCanvas) // (imageObj, imageX, imageY, imageWidth, imageHeight, xCanvas, yCanvas, widthCanvas, heightCanvas)
+        this.batrangs.forEach(rang => {
+            rang.drawThisBatrang()
+                
+            this.detectCollision(rang)
+        })
         }
       
     
@@ -110,7 +117,7 @@ class Batman extends Character{
 }
 
 
-const batman = new Batman("Batman","/Batman/batman finally.jpg", 300, 250)
+const batman = new Batman("Batman","Batman/batman finally.jpg", 300, 250)
 
 
 
@@ -122,9 +129,9 @@ class Joker extends Character{
     
     }
     moveJoker= () => {
-        this.xCanvas++
+        this.xCanvas++ 
         this.yCanvas++
-        console.log(this)
+        
     }
 
 }
@@ -148,24 +155,27 @@ class Batrang {
         this.color = color; 
         this.direction = direction,
         this.index = index
+        
+
     }
     drawThisBatrang = () => {
+        ctx.fillStyle = "yellow";
         switch(this.direction){
             case 'Up':
-                ctx.fillRect(this.x, this.y--, this.width, this.height, this.color)
+                ctx.fillRect(this.x, this.y-=3, this.width, this.height, this.color)
                 break;
             case 'Down':
-                ctx.fillRect(this.x, this.y++, this.width, this.height, this.color)
+                ctx.fillRect(this.x, this.y+=3, this.width, this.height, this.color)
                 break;
             case 'Left':
-                ctx.fillRect(this.x--, this.y, this.width, this.height, this.color)
+                ctx.fillRect(this.x-=3, this.y, this.width, this.height, this.color)
                 break;
             case 'Right':
-                ctx.fillRect(this.x++, this.y, this.width, this.height, this.color)
+                ctx.fillRect(this.x+=3, this.y, this.width, this.height, this.color)
                 break;                                                
         }
         if(this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height){
-            batman.batrangs.splice(this.index,1)
+            batman.batrangs.splice(this.index,0)
         }
 
     }
@@ -194,6 +204,7 @@ document.addEventListener('keydown', function(event){
             batman.yCanvas -= 10
             batman.x = (batman.x + 45) % 90
             batman.direction= "Up"
+
             break;
         case 'ArrowDown':
             batman.y =0
@@ -215,7 +226,10 @@ document.addEventListener('keydown', function(event){
             batman.direction = "Right"
             break;
         case " ":
-            console.log()
+            
             batman.shootBatrang()
+    }
+    if(this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height){
+        batman.batrangs.splice(this.index,1)
     }
 })
