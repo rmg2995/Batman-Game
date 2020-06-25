@@ -191,7 +191,7 @@ class Batrang {
                 break;                                                
         }
         if(this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height){
-            batman.batrangs.splice(this.index,1)
+            batman.batrangs.splice(this.index,0)
         }
 
     }
@@ -253,6 +253,6 @@ document.addEventListener('keydown', function(event){
             batman.shootBatrang()
     }
     if(this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height){
-        batman.batrangs.splice(this.index,1)
+        batman.batrangs.splice(this.index,0)
     }
 })
