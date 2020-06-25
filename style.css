@@ -50,9 +50,10 @@ p{
     text-align: center;
 }
 #canvas{
-    padding: 0 25% 0 0;
+    /* padding: 0 25% 0 0;
     float: right;
-    width: 600px
+    width: 600px */
+    display: none;
 }
 .logo{
     height: 150px;
@@ -70,4 +71,9 @@ p{
  .audiobtn{
     background-color: yellow;
     margin-left: 70px;
+ }
+ .container{
+     display: flex;
+     justify-content: center;
+     align-items: center;
  }

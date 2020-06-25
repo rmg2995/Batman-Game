@@ -1,17 +1,21 @@
 
 const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
-canvas.width = 600//window.innerWidth /1.2
-canvas.height = 400//window.innerHeight /1.2
+canvas.width = window.innerWidth /2
+canvas.height = canvas.width * 4/6 
+let difficulty = "easy"
 let startGame = document.querySelector("#startbtn")
 startGame.onclick = ()=> {
     game.addJoker()
     animationLoop()
+    document.querySelector('section').remove('section')
+    document.querySelector('canvas').style.display = 'block'
 }
 let easy = document.querySelector('.easy')
 easy.onclick = () => {
-
+    difficulty = "easy"
 }
+
 //Game class, adds jokers in set interval, draws map
 class Game {
 
@@ -30,9 +34,12 @@ class Game {
         // this.jokers.push(joker, joker2)
         
         setInterval(() => {
+            if(difficulty === "easy"){
+
             let joker = new Joker("Joker","Batman/Joker-01.png", Math.random() * canvas.width , 0)
-            this.jokers.push(joker)
+            this.jokers.push(joker)}
         }, 800)
+    
     }
 
     drawMap = () => {
@@ -60,7 +67,8 @@ class Character{
         this.heightCanvas = 50
         this.batrangs = []  //objects 
         this.bangGunBullets = [] //objects 
-        this.direction = "Down"
+        this.direction = "Down",
+        this.gameOver = false
     }
 
     
@@ -70,31 +78,36 @@ class Character{
             new Batrang(this.xCanvas+ 32, this.yCanvas + 38, 6, 6, this.color, this.direction, this.batrangs.length-1) 
         )
     }
-    detectCollision = (batrang) => {
+    detectCollision = () => {
  
-
+            
         game.jokers.forEach((joker, i) => {
             
-        //joker.moveJoker()
-        //console. log(joker)
-        //this.batrangs.forEach(batrang => {
-        if (joker.xCanvas < batrang.x + batrang.width &&
-            joker.xCanvas + joker.widthCanvas > batrang.x &&
-            joker.yCanvas < batrang.y + batrang.height &&
-            joker.yCanvas + joker.heightCanvas > batrang.y) {
-                game.jokers.splice(i,1)
-                document.querySelector('.score span').innerHTML++
-                        
+            this.batrangs.forEach((batrang) => {
 
-            }
+                if (joker.xCanvas < batrang.x + batrang.width &&
+                    joker.xCanvas + joker.widthCanvas > batrang.x &&
+                    joker.yCanvas < batrang.y + batrang.height &&
+                    joker.yCanvas + joker.heightCanvas > batrang.y) {
+                        game.jokers.splice(i,1)//Jokers dont hurt you unless you through the first batrang
+                        document.querySelector('.score span').innerHTML++
+                                
+        
+                    }
+            })
             
             if (joker.xCanvas < batman.xCanvas + batman.widthCanvas &&
                 joker.xCanvas + joker.widthCanvas > batman.xCanvas &&
                 joker.yCanvas < batman.yCanvas + batman.heightCanvas &&
                 joker.yCanvas + joker.heightCanvas > batman.yCanvas) {
                     window.cancelAnimationFrame(animationID)
-                    //console.log('collision detected!')
-                    //  alert('game over')
+                    gameOver()
+                    // if(!this.gameOver){
+                        console.log('collision detected!', this.gameOver)
+                        console.log(`GAME OVER! LOOKS LIKE JOKER GOT BATMAN!`)
+                        // this.gameOver = true
+                        // return
+                    // }
             }  
             
 
@@ -110,17 +123,28 @@ class Character{
         this.batrangs.forEach(rang => {
             rang.drawThisBatrang()
                 
-            this.detectCollision(rang)
         })
-        }
-      
+        
+    }
+    
     
       
       
     
     
 }
+function gameOver(){
+    document.querySelector('#canvas').classList.add('gameOver')
+    for(let i = 0; i < 5; i++){
+    setTimeout(function (){
+        document.querySelector('.container').innerHTML = `<div>restart in ${5-i} seconds</div>`
+        if (i === 4){
+            window.location.reload()
+        }
+    }, i * 1000)
+}
 
+}
 // Batman properties: x, y, width, height, image
 // Batman methods: shoot
 class Batman extends Character{
@@ -156,7 +180,7 @@ class Joker extends Character{
 }
 
 
-//THis will probably end up going in an array 
+
 
 
 
@@ -192,23 +216,23 @@ class Batrang {
                 break;                                                
         }
         if(this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height){
-            batman.batrangs.splice(this.index,0)//doesnt work like i want. it deletes all of them
+            batman.batrangs.splice(this.index,1)//doesnt work like i want. it deletes all of them
         }
 
     }
 }
 
 
-
+//animates everything, and is called in start game button
 function animationLoop() {
     animationID = window.requestAnimationFrame(animationLoop)
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     // ctx.fillRect(0, 0, canvas.width, canvas.height)
     game.drawMap()
     batman.drawCharacter()
+    batman.detectCollision()
     game.jokers.forEach(joker => joker.drawCharacter())
     game.jokers.forEach(joker => joker.moveJoker())
-
     
     
         
@@ -264,10 +288,10 @@ document.addEventListener('keydown', function(event){
 
 //mute music
 function mute(){
-    if(document.getElementById('background_audio').muted == false){
+    if(document.getElementById('background_audio').muted == true){
       document.getElementById('background_audio').muted = true;
     } else {
-      document.getElementById('background_audio').muted = false;
+      document.getElementById('background_audio').muted = true;
     }
 
 }
