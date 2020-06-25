@@ -8,18 +8,27 @@
 </head>
 <body>
     
+    
     <div id="top">
         
         <h1>Batman VS Jokers</h1>
         
     </div>
+    
     <div class="scoreboard"></div>
     <p class="score">Score: <span>0</span></p>
      
     <div>
     <canvas id="canvas"></canvas>
     </div>
-      
+    
+    
+    <audio id="background_audio"  autoplay="true" loop="loop">
+        <source src="Batman/Batman - 1966 TV.mp3"></audio>
+    
+    <button  class = "audiobtn" onclick="mute()">Play Audio / Mute</button>
+    <button class = "easy">Easy</button>
+    <button class ="hard">Hard</button>
     <p>Move Batman with the Up, Down, Left, and Right Arrow Keys. Shoot his batrangs with the Space Bar</p>
         <img src="Batman/arrow keys.png" class="arrows">
         

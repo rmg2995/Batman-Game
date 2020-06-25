@@ -8,8 +8,10 @@ startGame.onclick = ()=> {
     game.addJoker()
     animationLoop()
 }
+let easy = document.querySelector('.easy')
+easy.onclick = () => {
 
-
+}
 //Game class
 class Game {
 
@@ -256,3 +258,11 @@ document.addEventListener('keydown', function(event){
         batman.batrangs.splice(this.index,0)
     }
 })
+function mute(){
+    if(document.getElementById('background_audio').muted == false){
+      document.getElementById('background_audio').muted = true;
+    } else {
+      document.getElementById('background_audio').muted = false;
+    }
+
+}
