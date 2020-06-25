@@ -38,7 +38,7 @@ p{
     width: 250px;
     height: 50px;
     font-size: 20px;
-    margin: 10px 1000px 
+    margin: 10px 825px 
 
 }
 .score{
@@ -62,18 +62,43 @@ p{
  }
  .arrows{
      width: 150px;
-     margin-left: 70px;
+     margin:0px 300px;
  }
  .spacebar{
      width: 250px;
-     margin-left: 70px;
+     margin: 0 300px;
  }
  .audiobtn{
     background-color: yellow;
     margin-left: 70px;
+    width: 150px;
+    height:30px;
+    font-size: 15px;
  }
  .container{
      display: flex;
      justify-content: center;
      align-items: center;
  }
+.info{
+    font-size: 25px;
+}
+.info-img{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+.easy{
+    background-color: yellow;
+    margin-left: 70px;
+    width: 150px;
+    height:30px;
+    font-size: 15px;
+}
+.hard{
+    background-color: yellow;
+    margin-left: 70px;
+    width: 150px;
+    height:30px;
+    font-size: 15px;
+}

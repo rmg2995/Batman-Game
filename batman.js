@@ -3,17 +3,23 @@ const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
 canvas.width = window.innerWidth /2
 canvas.height = canvas.width * 4/6 
-let difficulty = "easy"
+let difficulty = 800
 let startGame = document.querySelector("#startbtn")
 startGame.onclick = ()=> {
-    game.addJoker()
-    animationLoop()
     document.querySelector('section').remove('section')
     document.querySelector('canvas').style.display = 'block'
+    animationLoop()
+    game.addJoker()
 }
 let easy = document.querySelector('.easy')
 easy.onclick = () => {
-    difficulty = "easy"
+    difficulty = 800;
+    // game.addJoker()
+}
+let hard = document.querySelector('.hard')
+hard.onclick = () => {
+    difficulty = 400
+    // game.addJoker()
 }
 
 //Game class, adds jokers in set interval, draws map
@@ -34,11 +40,15 @@ class Game {
         // this.jokers.push(joker, joker2)
         
         setInterval(() => {
-            if(difficulty === "easy"){
+            // if(difficulty === "easy"){
 
             let joker = new Joker("Joker","Batman/Joker-01.png", Math.random() * canvas.width , 0)
-            this.jokers.push(joker)}
-        }, 800)
+            this.jokers.push(joker)
+        // }
+        }, difficulty)
+        
+        
+        
     
     }
 
@@ -215,9 +225,12 @@ class Batrang {
                 ctx.fillRect(this.x+=3, this.y, this.width, this.height, this.color)
                 break;                                                
         }
-        if(this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height){
-            batman.batrangs.splice(this.index,1)//doesnt work like i want. it deletes all of them
-        }
+        batman.batrangs.forEach((batrang, i) => {
+
+            if(batrang.x < 0 || batrang.x > canvas.width || batrang.y < 0 || batrang.y > canvas.height){
+                batman.batrangs.splice(i,1)//doesnt work like i want. it deletes all of them
+            }
+        })
 
     }
 }
@@ -252,30 +265,41 @@ function animationLoop() {
 document.addEventListener('keydown', function(event){
     switch(event.key) {
         case 'ArrowUp':
-            batman.y = 48* 3
-            batman.yCanvas -= 10
-            batman.x = (batman.x + 45) % 90
             batman.direction= "Up"
+            batman.y = 48* 3
+            if(batman.yCanvas -10 >= 0 ){
+                batman.yCanvas -= 10
+                batman.x = (batman.x + 45) % 90
+            }
 
             break;
         case 'ArrowDown':
+            batman.direction = "Down"
             batman.y =0
+            if(batman.yCanvas +10 <= canvas.height -40){
             batman.yCanvas += 10
             batman.x = (batman.x + 45) % 90
-            batman.direction = "Down"
+            } 
             break;
         case 'ArrowLeft':
-            
             batman.y =48* 1
-            batman.xCanvas -= 10
-            batman.x = (batman.x + 45) % 90
             batman.direction= "Left"
+            if(batman.xCanvas -10 >= 0 ){
+               
+                batman.xCanvas -= 10
+                batman.x = (batman.x + 45) % 90
+                
+
+            }
             break;
         case 'ArrowRight':
+            batman.direction = "Right"
             batman.y = 48 * 2
+            if(batman.xCanvas +10 <= canvas.width -40){
             batman.xCanvas += 10
             batman.x = (batman.x + 45) % 90
-            batman.direction = "Right"
+            }
+            
             break;
         case " ":
             
@@ -288,10 +312,17 @@ document.addEventListener('keydown', function(event){
 
 //mute music
 function mute(){
-    if(document.getElementById('background_audio').muted == true){
-      document.getElementById('background_audio').muted = true;
-    } else {
-      document.getElementById('background_audio').muted = true;
-    }
+    
+    audioTag.pause()
+    playAudio.onclick = play
+}
+let playAudio = document.querySelector('.audiobtn')
+let audioTag = document.querySelector('#background_audio')
+playAudio.onclick= play
 
+function play (){
+    audioTag.currentTime = 0
+    audioTag.volume = 0.2
+    audioTag.play()
+    playAudio.onclick = mute
 }
