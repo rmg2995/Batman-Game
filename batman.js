@@ -12,7 +12,7 @@ let easy = document.querySelector('.easy')
 easy.onclick = () => {
 
 }
-//Game class
+//Game class, adds jokers in set interval, draws map
 class Game {
 
     constructor(){
@@ -45,7 +45,7 @@ class Game {
 let game = new Game()
 
 
-
+//defines characters, detect Collision , shoot batrangs 
 class Character{
     constructor(name, src, xCanvas, yCanvas){
         this.image = new Image()
@@ -121,7 +121,8 @@ class Character{
     
 }
 
-
+// Batman properties: x, y, width, height, image
+// Batman methods: shoot
 class Batman extends Character{
     constructor(name, image, x, y, width, height, xCanvas, yCanvas, widthCanvas, heightCanvas, batrangs){
         super(name, image, x, y, width, height, xCanvas, yCanvas, widthCanvas, heightCanvas, batrangs) 
@@ -138,7 +139,7 @@ const batman = new Batman("Batman","Batman/batman finally.jpg", 225, 150)
 
 
 
-
+//Joker properties: x, y, width, height, image, makes joker move
 class Joker extends Character{
     constructor(name, image, x, y, width, height, xCanvas, yCanvas, widthCanvas, heightCanvas){
         super(name, image, x, y, width, height, xCanvas, yCanvas, widthCanvas, heightCanvas) 
@@ -157,13 +158,11 @@ class Joker extends Character{
 
 //THis will probably end up going in an array 
 
-//const joker = new Joker("Joker","/Batman/Joker-01.png", 50 ,100)
-
-//const joker2 = new Joker("Joker","/Batman/Joker-01.png", 350 ,100)
 
 
 
 
+//batrang, move batrang, still doesnt delete batrangs
 class Batrang {
     constructor(x,y,width, height,color, direction, index){
         this.x = x;
@@ -193,7 +192,7 @@ class Batrang {
                 break;                                                
         }
         if(this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height){
-            batman.batrangs.splice(this.index,0)
+            batman.batrangs.splice(this.index,0)//doesnt work like i want. it deletes all of them
         }
 
     }
@@ -222,6 +221,10 @@ function animationLoop() {
 }
 
  //animationLoop()
+
+
+
+ //move batman
 document.addEventListener('keydown', function(event){
     switch(event.key) {
         case 'ArrowUp':
@@ -254,10 +257,12 @@ document.addEventListener('keydown', function(event){
             
             batman.shootBatrang()
     }
-    if(this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height){
-        batman.batrangs.splice(this.index,0)
-    }
+    // if(this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height){
+    //     batman.batrangs.splice(this.index,0) dont know how to stop batman from going off canvas
+    // }
 })
+
+//mute music
 function mute(){
     if(document.getElementById('background_audio').muted == false){
       document.getElementById('background_audio').muted = true;
