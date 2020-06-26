@@ -7,4 +7,4 @@ Hello I'm building a batman game using canvas. I have a batman shooting at Joker
 https://rmg2995.github.io/Batman-Game/
 
 #Tech Used
-Javascript, HTML, CSS
+Javascript, HTML, CSS, Canvas
