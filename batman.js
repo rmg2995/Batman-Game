@@ -262,6 +262,7 @@ function animationLoop() {
 
 
  //move batman
+//  let soundEffect = new Audio('Batman/Sound effect Batman.mp3')
 document.addEventListener('keydown', function(event){
     switch(event.key) {
         case 'ArrowUp':
@@ -302,8 +303,11 @@ document.addEventListener('keydown', function(event){
             
             break;
         case " ":
-            
-            batman.shootBatrang()
+            // soundEffect?.pause()
+            // soundEffect?.currentTime = 0
+            // soundEffect.play()
+             batman.shootBatrang()
+           new Audio('Batman/Sound effect Batman.mp3').play()
     }
     // if(this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height){
     //     batman.batrangs.splice(this.index,0) dont know how to stop batman from going off canvas

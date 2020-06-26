@@ -38,8 +38,16 @@ p{
     width: 250px;
     height: 50px;
     font-size: 20px;
-    margin: 10px 825px 
+   display: flex;
+   justify-content: center;
+   align-items: center; 
 
+
+}
+.startBtn{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
 }
 .score{
     font-size: 25px;
