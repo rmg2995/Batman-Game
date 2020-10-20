@@ -13,12 +13,10 @@ startGame.onclick = () => {
 let easy = document.querySelector(".easy");
 easy.onclick = () => {
   difficulty = 800;
-  // game.addJoker()
 };
 let hard = document.querySelector(".hard");
 hard.onclick = () => {
   difficulty = 400;
-  // game.addJoker()
 };
 
 //Game class, adds jokers in set interval, draws map
@@ -26,16 +24,10 @@ class Game {
   constructor() {
     this.image = new Image();
     this.image.src = "Batman/batman experiment.gif";
-    // this.batrangs = []
     this.jokers = [];
-
     this.score = 0;
   }
   addJoker = () => {
-    // const joker = new Joker("Joker","/Batman/Joker-01.png", 50 ,100)
-    // const joker2 = new Joker("Joker","/Batman/Joker-01.png", 350 ,100)
-    // this.jokers.push(joker, joker2)
-
     setInterval(() => {
       // if(difficulty === "easy"){
 
@@ -109,12 +101,8 @@ class Character {
       ) {
         window.cancelAnimationFrame(animationID);
         gameOver();
-        // if(!this.gameOver){
         console.log("collision detected!", this.gameOver);
         console.log(`GAME OVER! LOOKS LIKE JOKER GOT BATMAN!`);
-        // this.gameOver = true
-        // return
-        // }
       }
     });
   };
@@ -285,16 +273,12 @@ class Batrang {
 function animationLoop() {
   animationID = window.requestAnimationFrame(animationLoop);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // ctx.fillRect(0, 0, canvas.width, canvas.height)
+
   game.drawMap();
   batman.drawCharacter();
   batman.detectCollision();
   game.jokers.forEach((joker) => joker.drawCharacter());
   game.jokers.forEach((joker) => joker.moveJoker());
-
-  // ctx.drawImage(batman.image, batman.xImage, batman.yImage, batman.widthImage,batman.heightImage, batman.xCanvas, batman.yCanvas, batman.widthCanvas, batman.heightCanvas) // (imageObj, imageX, imageY, imageWidth, imageHeight, xCanvas, yCanvas, widthCanvas, heightCanvas)
-  // game.draw()
-  // ctx.drawImage(joker.image, joker.xImage, joker.yImage, joker.widthImage,joker.heightImage, joker.xCanvas, joker.yCanvas, joker.widthCanvas, joker.heightCanvas)
 }
 
 //animationLoop()
